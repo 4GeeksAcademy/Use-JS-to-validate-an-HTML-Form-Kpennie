@@ -37,37 +37,43 @@
       background-color: #0d6efd;
       color: white;
     }
+    .invalid-field {
+      background-color: #ffebee !important;
+      border-color: #f44336 !important;
+    }
+    .valid-field {
+      background-color: #e8f5e8 !important;
+      border-color: #4caf50 !important;
+    }
   </style>
 </head>
 <body>
 <div class="container my-5">
   <h4 class="mb-4">Payment Information</h4>
   <div class="form-wrapper">
-    <form novalidate>
+    <form id="paymentForm" novalidate>
 
-
-
-
-<div class="alert alert-danger" role="alert">
-  Some fields are missing
-</div>
-
+      <!-- Error Messages Box -->
+      <div id="errorMessages" class="alert alert-danger" role="alert" style="display: none;">
+        <strong>Please fix the following errors:</strong>
+        <ul id="errorList"></ul>
+      </div>
 
       <!-- Row 1 -->
       <div class="row g-3">
         <div class="col-md-4">
           <label for="cardNumber" class="form-label">Card #</label>
-          <input type="text" id="cardNumber" class="form-control" placeholder="xxxxxxxxxxx"  required>
+          <input type="text" id="cardNumber" class="form-control" placeholder="1234567890123456" required>
         </div>
         <div class="col-md-4">
           <label for="cvc" class="form-label">CVC #</label>
-          <input type="text" id="cvc" class="form-control" placeholder="00000" required>
+          <input type="text" id="cvc" class="form-control" placeholder="123" required>
         </div>
         <div class="col-md-4">
           <label for="amount" class="form-label">Amount</label>
           <div class="input-group">
             <span class="input-group-text">$</span>
-            <input type="number" id="amount" class="form-control" min="0" step="0.01" placeholder="Amount" required>
+            <input type="number" id="amount" class="form-control" min="0" step="0.01" placeholder="0.00" required>
           </div>
         </div>
       </div>
@@ -75,43 +81,41 @@
       <!-- Row 2 -->
       <div class="row g-3 mt-2">
         <div class="col-md-6">
-                  <label for="cardNumber" class="form-label">First Name</label>
-        <input type="text" class="form-control">
+          <label for="firstName" class="form-label">First Name</label>
+          <input type="text" id="firstName" class="form-control" required>
         </div>
         <div class="col-md-6">
-                    <label for="cardNumber" class="form-label">Last Name</label>
-    <input type="text" class="form-control">
-  </div>
-</div>
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="text" id="lastName" class="form-control" required>
+        </div>
+      </div>
 
       <!-- Row 3 -->
       <div class="row g-3 mt-2">
-
-
-
-
         <div class="col-md-6">
           <label for="city" class="form-label">City</label>
           <input type="text" id="city" class="form-control" required>
         </div>
-
- <div class="col-md-3">
-          <label for="state" class="form-label">state</label>
-
-          <select  class="custom-select form-control width">
-  <option selected>Pick a state</option>
-    <option value="AL">Alabama</option>
+        <div class="col-md-3">
+          <label for="state" class="form-label">State</label>
+          <select id="state" class="form-select" required>
+            <option value="">Pick a state</option>
+            <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
             <option value="AZ">Arizona</option>
-</select>
+            <option value="AR">Arkansas</option>
+            <option value="CA">California</option>
+            <option value="CO">Colorado</option>
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+          </select>
         </div>
-
         <div class="col-md-3">
           <label for="postal" class="form-label">Postal Code</label>
-          <input type="text" id="postal" class="form-control" required>
+          <input type="text" id="postal" class="form-control" placeholder="12345" required>
         </div>
-
-
       </div>
 
       <!-- Row 4 -->
@@ -119,18 +123,17 @@
         <div class="col-md-6">
           <label class="form-label">We accept:</label>
           <div class="credit-icons mt-1">
-                      <input type="radio" name="ki" required>
-            <img src="https://img.icons8.com/color/48/000000/amex.png" alt="Amex">
-                      <input type="radio" name="ki" required>
-
-            <img src="https://img.icons8.com/color/48/000000/mastercard.png" alt="Mastercard">
-                      <input type="radio" name="ki" required>
-
-            <img src="https://img.icons8.com/color/48/000000/visa.png" alt="Visa">
-                      <input type="radio" name="ki" required>
-
-            <img src="https://img.icons8.com/color/48/000000/diners-club.png" alt="Diners Club">
-
+            <input type="radio" id="amex" name="cardType" value="amex" required>
+            <label for="amex"><img src="https://img.icons8.com/color/48/000000/amex.png" alt="Amex"></label>
+            
+            <input type="radio" id="mastercard" name="cardType" value="mastercard" required>
+            <label for="mastercard"><img src="https://img.icons8.com/color/48/000000/mastercard.png" alt="Mastercard"></label>
+            
+            <input type="radio" id="visa" name="cardType" value="visa" required>
+            <label for="visa"><img src="https://img.icons8.com/color/48/000000/visa.png" alt="Visa"></label>
+            
+            <input type="radio" id="diners" name="cardType" value="diners" required>
+            <label for="diners"><img src="https://img.icons8.com/color/48/000000/diners-club.png" alt="Diners Club"></label>
           </div>
         </div>
         <div class="col-md-6">
@@ -144,12 +147,215 @@
       <div class="row mt-4">
         <div class="col-md-12 text-end">
           <button type="button" class="btn btn-cancel me-2">Cancel</button>
-          <button type="button" class="btn btn-send">Send</button>
+          <button type="submit" class="btn btn-send">Send</button>
         </div>
       </div>
     </form>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('paymentForm');
+    const errorBox = document.getElementById('errorMessages');
+    const errorList = document.getElementById('errorList');
+
+    form.addEventListener('submit', function (event) {
+      // Step 1: Prevent form submission
+      event.preventDefault();
+      
+      // Clear previous validation styles and errors
+      clearValidationStyles();
+      errorBox.style.display = 'none';
+      errorList.innerHTML = '';
+      
+      const errors = [];
+      let isFormValid = true;
+
+      // Step 2: Validate all inputs
+      
+      // Card Number validation
+      const cardNumber = document.getElementById('cardNumber').value.trim();
+      const cardRegex = /^\d{13,19}$/;
+      if (!cardNumber) {
+        errors.push('Card number is required');
+        markFieldInvalid('cardNumber');
+        isFormValid = false;
+      } else if (!cardRegex.test(cardNumber)) {
+        errors.push('Card number must be between 13-19 digits');
+        markFieldInvalid('cardNumber');
+        isFormValid = false;
+      } else {
+        markFieldValid('cardNumber');
+      }
+
+      // CVC validation
+      const cvc = document.getElementById('cvc').value.trim();
+      const cvcRegex = /^\d{3,4}$/;
+      if (!cvc) {
+        errors.push('CVC is required');
+        markFieldInvalid('cvc');
+        isFormValid = false;
+      } else if (!cvcRegex.test(cvc)) {
+        errors.push('CVC must be 3-4 digits');
+        markFieldInvalid('cvc');
+        isFormValid = false;
+      } else {
+        markFieldValid('cvc');
+      }
+
+      // Amount validation
+      const amount = document.getElementById('amount').value.trim();
+      if (!amount) {
+        errors.push('Amount is required');
+        markFieldInvalid('amount');
+        isFormValid = false;
+      } else if (parseFloat(amount) <= 0) {
+        errors.push('Amount must be greater than 0');
+        markFieldInvalid('amount');
+        isFormValid = false;
+      } else {
+        markFieldValid('amount');
+      }
+
+      // First Name validation
+      const firstName = document.getElementById('firstName').value.trim();
+      const nameRegex = /^[A-Za-z\s]+$/;
+      if (!firstName) {
+        errors.push('First name is required');
+        markFieldInvalid('firstName');
+        isFormValid = false;
+      } else if (!nameRegex.test(firstName)) {
+        errors.push('First name can only contain letters and spaces');
+        markFieldInvalid('firstName');
+        isFormValid = false;
+      } else {
+        markFieldValid('firstName');
+      }
+
+      // Last Name validation
+      const lastName = document.getElementById('lastName').value.trim();
+      if (!lastName) {
+        errors.push('Last name is required');
+        markFieldInvalid('lastName');
+        isFormValid = false;
+      } else if (!nameRegex.test(lastName)) {
+        errors.push('Last name can only contain letters and spaces');
+        markFieldInvalid('lastName');
+        isFormValid = false;
+      } else {
+        markFieldValid('lastName');
+      }
+
+      // City validation
+      const city = document.getElementById('city').value.trim();
+      if (!city) {
+        errors.push('City is required');
+        markFieldInvalid('city');
+        isFormValid = false;
+      } else if (!nameRegex.test(city)) {
+        errors.push('City name can only contain letters and spaces');
+        markFieldInvalid('city');
+        isFormValid = false;
+      } else {
+        markFieldValid('city');
+      }
+
+      // State validation
+      const state = document.getElementById('state').value;
+      if (!state) {
+        errors.push('Please select a state');
+        markFieldInvalid('state');
+        isFormValid = false;
+      } else {
+        markFieldValid('state');
+      }
+
+      // Postal Code validation
+      const postal = document.getElementById('postal').value.trim();
+      const postalRegex = /^\d{5}(-\d{4})?$/;
+      if (!postal) {
+        errors.push('Postal code is required');
+        markFieldInvalid('postal');
+        isFormValid = false;
+      } else if (!postalRegex.test(postal)) {
+        errors.push('Postal code must be in format 12345 or 12345-6789');
+        markFieldInvalid('postal');
+        isFormValid = false;
+      } else {
+        markFieldValid('postal');
+      }
+
+      // Card Type validation
+      const cardType = document.querySelector('input[name="cardType"]:checked');
+      if (!cardType) {
+        errors.push('Please select a card type');
+        markCardTypeInvalid();
+        isFormValid = false;
+      } else {
+        markCardTypeValid();
+      }
+
+      // Step 3 & 4: Show errors if validation fails
+      if (!isFormValid) {
+        displayErrors(errors);
+      } else {
+        // Form is valid - you can proceed with submission
+        alert('Form is valid! Ready to process payment.');
+        console.log('Form data:', {
+          cardNumber, cvc, amount, firstName, lastName, 
+          city, state, postal, cardType: cardType.value
+        });
+      }
+    });
+
+    function clearValidationStyles() {
+      const inputs = form.querySelectorAll('.form-control, .form-select');
+      inputs.forEach(input => {
+        input.classList.remove('invalid-field', 'valid-field');
+      });
+    }
+
+    function markFieldInvalid(fieldId) {
+      const field = document.getElementById(fieldId);
+      field.classList.add('invalid-field');
+      field.classList.remove('valid-field');
+    }
+
+    function markFieldValid(fieldId) {
+      const field = document.getElementById(fieldId);
+      field.classList.add('valid-field');
+      field.classList.remove('invalid-field');
+    }
+
+    function markCardTypeInvalid() {
+      const cardTypeContainer = document.querySelector('.credit-icons');
+      cardTypeContainer.style.backgroundColor = '#ffebee';
+      cardTypeContainer.style.border = '2px solid #f44336';
+      cardTypeContainer.style.borderRadius = '4px';
+      cardTypeContainer.style.padding = '5px';
+    }
+
+    function markCardTypeValid() {
+      const cardTypeContainer = document.querySelector('.credit-icons');
+      cardTypeContainer.style.backgroundColor = '#e8f5e8';
+      cardTypeContainer.style.border = '2px solid #4caf50';
+      cardTypeContainer.style.borderRadius = '4px';
+      cardTypeContainer.style.padding = '5px';
+    }
+
+    function displayErrors(errors) {
+      errorList.innerHTML = '';
+      errors.forEach(error => {
+        const li = document.createElement('li');
+        li.textContent = error;
+        errorList.appendChild(li);
+      });
+      errorBox.style.display = 'block';
+      errorBox.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
